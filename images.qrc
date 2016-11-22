@@ -1,0 +1,132 @@
+<RCC>
+    <qresource prefix="/">
+        <file>Graphics/profile.png</file>
+        <file>Tiles/a21436587.png</file>
+        <file>Tiles/a21754836.png</file>
+        <file>Tiles/a21786534.png</file>
+        <file>Tiles/a21876543.png</file>
+        <file>Tiles/a34127856.png</file>
+        <file>Tiles/a36187254.png</file>
+        <file>Tiles/a37154826.png</file>
+        <file>Tiles/a37186524.png</file>
+        <file>Tiles/a38176542.png</file>
+        <file>Tiles/a43217856.png</file>
+        <file>Tiles/a43218765.png</file>
+        <file>Tiles/a46718235.png</file>
+        <file>Tiles/a46817253.png</file>
+        <file>Tiles/a47513826.png</file>
+        <file>Tiles/a47618325.png</file>
+        <file>Tiles/a47816523.png</file>
+        <file>Tiles/a48716532.png</file>
+        <file>Tiles/a53271846.png</file>
+        <file>Tiles/a53281764.png</file>
+        <file>Tiles/a54721836.png</file>
+        <file>Tiles/a56781234.png</file>
+        <file>Tiles/a63287154.png</file>
+        <file>Tiles/a63728135.png</file>
+        <file>Tiles/a64827153.png</file>
+        <file>Tiles/a65782134.png</file>
+        <file>Tiles/a65872143.png</file>
+        <file>Tiles/a67854123.png</file>
+        <file>Tiles/a68437152.png</file>
+        <file>Tiles/a73254816.png</file>
+        <file>Tiles/a73286514.png</file>
+        <file>Tiles/a74523816.png</file>
+        <file>Tiles/a78436512.png</file>
+        <file>Tiles/a83254761.png</file>
+        <file>Tiles/a83276541.png</file>
+        <file>Tiles/a87436521.png</file>
+        <file>RedTiles/a21436587.png</file>
+        <file>RedTiles/a21438765.png</file>
+        <file>RedTiles/a21654387.png</file>
+        <file>RedTiles/a21687354.png</file>
+        <file>RedTiles/a21768435 (2).png</file>
+        <file>RedTiles/a21768435.png</file>
+        <file>RedTiles/a21786534 (2).png</file>
+        <file>RedTiles/a21786534.png</file>
+        <file>RedTiles/a34127856 (2).png</file>
+        <file>RedTiles/a34127856.png</file>
+        <file>RedTiles/a34128765.png</file>
+        <file>RedTiles/a36154287.png</file>
+        <file>RedTiles/a36178245.png</file>
+        <file>RedTiles/a36187254.png</file>
+        <file>RedTiles/a38167452 (2).png</file>
+        <file>RedTiles/a38167452.png</file>
+        <file>RedTiles/a43218756 (2).png</file>
+        <file>RedTiles/a43218756.png</file>
+        <file>RedTiles/a46513287.png</file>
+        <file>RedTiles/a46718235.png</file>
+        <file>RedTiles/a47513826 (2).png</file>
+        <file>RedTiles/a47513826.png</file>
+        <file>RedTiles/a47618325.png</file>
+        <file>RedTiles/a47816523 (2).png</file>
+        <file>RedTiles/a47816523.png</file>
+        <file>RedTiles/a48513762.png</file>
+        <file>RedTiles/a53281764.png</file>
+        <file>RedTiles/a54721836.png</file>
+        <file>RedTiles/a54821763 (2).png</file>
+        <file>RedTiles/a54821763.png</file>
+        <file>RedTiles/a56781234.png</file>
+        <file>RedTiles/a56871243 (2).png</file>
+        <file>RedTiles/a56871243.png</file>
+        <file>RedTiles/a57681324.png</file>
+        <file>RedTiles/a57861423 (2).png</file>
+        <file>RedTiles/a57861423.png</file>
+        <file>RedTiles/a58431762.png</file>
+        <file>RedTiles/a58761432.png</file>
+        <file>RedTiles/a63287154.png</file>
+        <file>RedTiles/a64523187 (2).png</file>
+        <file>RedTiles/a64523187.png</file>
+        <file>RedTiles/a64827153 (2).png</file>
+        <file>RedTiles/a64827153.png</file>
+        <file>RedTiles/a65432187.png</file>
+        <file>RedTiles/a65872143.png</file>
+        <file>RedTiles/a74826513 (2).png</file>
+        <file>RedTiles/a74826513.png</file>
+        <file>RedTiles/a75682314.png</file>
+        <file>RedTiles/a76583214.png</file>
+        <file>RedTiles/a76854213.png</file>
+        <file>RedTiles/a78436512 (2).png</file>
+        <file>RedTiles/a78436512.png</file>
+        <file>RedTiles/a83254761.png</file>
+        <file>RedTiles/a83267451 (2).png</file>
+        <file>RedTiles/a83267451.png</file>
+        <file>RedTiles/a83276541.png</file>
+        <file>RedTiles/a84627351.png</file>
+        <file>RedTiles/a84726531.png</file>
+        <file>RedTiles/a85432761.png</file>
+        <file>RedTiles/a85672341 (2).png</file>
+        <file>RedTiles/a85672341.png</file>
+        <file>RedTiles/a86754231.png</file>
+        <file>RedTiles/a87564321.png</file>
+        <file>Paths/b4.png</file>
+        <file>deck.cpp</file>
+        <file>deck.h</file>
+        <file>gamemanager.cpp</file>
+        <file>gamemanager.h</file>
+        <file>main.cpp</file>
+        <file>mainwindow.cpp</file>
+        <file>mainwindow.h</file>
+        <file>player.cpp</file>
+        <file>player.h</file>
+        <file>tile.cpp</file>
+        <file>tile.h</file>
+        <file>Graphics/BoardBackground.jpg</file>
+        <file>Paths/b6.png</file>
+        <file>Paths/r1.png</file>
+        <file>Paths/r6.png</file>
+        <file>Paths/b1.png</file>
+        <file>Paths/b2-4.png</file>
+        <file>Paths/r2-4.png</file>
+        <file>Paths/b3.png</file>
+        <file>Paths/r3.png</file>
+        <file>Paths/r2-6.png</file>
+        <file>Paths/b2-6.png</file>
+        <file>Paths/r5.png</file>
+        <file>Paths/b5.png</file>
+        <file>Paths/r2-7.png</file>
+        <file>Paths/b2-7.png</file>
+        <file>Paths/r8.png</file>
+        <file>Paths/b8.png</file>
+    </qresource>
+</RCC>
