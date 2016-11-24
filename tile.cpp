@@ -324,23 +324,15 @@ void Tile::mousePressEvent(QMouseEvent *event)
             }
             else
             {
-                switch(this->rotation)
-                {
-                case 0:
-                    this->rotation = 1;
-                    break;
-                case 1:
-                    this->rotation = 2;
-                    break;
-                case 2:
-                    this->rotation = 3;
-                    break;
-                case 3:
-                    this->rotation = 0;
-                    break;
-                }
+                qInfo() << "ROTATE";
+                const QPixmap * pixmap = this->pixmap();
+                QPixmap pix = *pixmap;
+                QMatrix m;
+                m.rotate(90);
+                pix = pix.transformed(m);
+                this->rotation = (this->rotation + 1)%4;
                 //ON ROTATION CHANGE
-                this->display();
+                this->setPixmap(pix);
             }
          }
     }
@@ -348,7 +340,10 @@ void Tile::mousePressEvent(QMouseEvent *event)
     {
         if(click1 != NULL)
         {
+
             this->playable = false;
+
+            //TRANSFER TILE CODE
             this->tileCode = click1->tileCode;
             std::string code = click1->tileCode;
             std::string codeCopy = click1->tileCode;
@@ -368,7 +363,12 @@ void Tile::mousePressEvent(QMouseEvent *event)
             }
             this->pathCode = code;
             this->rotation = click1->rotation;
-            display();
+
+            //TRANSFER IMAGE
+            const QPixmap * pixmap = click1->pixmap();
+            QPixmap pix = *pixmap;
+            this->setPixmap(pix);
+
             movePlayers(this);
 
             int index = click1->playerIndex;
@@ -425,14 +425,57 @@ void Tile::mousePressEvent(QMouseEvent *event)
 
 void Tile::display()
 {
-    std::string path = ":/RedTiles/a"+this->tileCode+".png";
+    std::string path = ":/RedTiles/a00000000.png";
     QString qpath = QString::fromStdString(path);
     QPixmap img = QPixmap(qpath);
-
     QMatrix rm;
-    rm.rotate(this->rotation*90);
     rm.scale(0.5, 0.5);
     img = img.transformed(rm);
+
+//    QMatrix rm;
+//    rm.rotate(this->rotation*90);
+//    rm.scale(0.5, 0.5);
+//    img = img.transformed(rm);
+//    this->setPixmap(img);
+
+    QPainter painter(&img);
+//    painter.setBrush(Qt::NoBrush);
+//    painter.setPen(Qt::red);
+//    painter.drawRect(0,0,64,64);
+    std::vector<int> v;
+
+    for(int i = 0; i < this->tileCode.length(); i++)
+    {
+        if(std::find(v.begin(), v.end(), i+1) != v.end())
+            continue;
+        std::string path = ":/Paths/";
+        int mod = i%2;
+        if(mod != 0)
+        {
+            path += "2-";
+        }
+
+        int digit = this->tileCode[i] - '0';
+        int relpath = digit - (i/2)*2;
+        int rot = i/2;
+        path += std::to_string(relpath);
+        v.push_back(digit);
+
+        path += ".png";
+        QPixmap pathimg = QPixmap(QString::fromStdString(path));
+        qInfo() << "Rendering path " + QString::number(i) + " with " + QString::fromStdString(path) + " rotated " + QString::number(rot) + " times for tile " + QString::fromStdString(this->tileCode);
+        if(!pathimg.isNull())
+        {
+            QMatrix qm;
+            qm.scale(0.5, 0.5);
+            qm.rotate(rot*90);
+            pathimg = pathimg.transformed(qm);
+            painter.drawPixmap(0,0,pathimg);
+        }
+        else
+            qInfo() << "path error occured";
+    }
+
     this->setPixmap(img);
 }
 

@@ -113,9 +113,7 @@
         <file>tile.h</file>
         <file>Graphics/BoardBackground.jpg</file>
         <file>Paths/b6.png</file>
-        <file>Paths/r1.png</file>
         <file>Paths/r6.png</file>
-        <file>Paths/b1.png</file>
         <file>Paths/b2-4.png</file>
         <file>Paths/r2-4.png</file>
         <file>Paths/b3.png</file>
@@ -128,5 +126,23 @@
         <file>Paths/b2-7.png</file>
         <file>Paths/r8.png</file>
         <file>Paths/b8.png</file>
+        <file>Paths/b2.png</file>
+        <file>Paths/r2.png</file>
+        <file>Paths/r2-5.png</file>
+        <file>Paths/b2-5.png</file>
+        <file>RedTiles/a00000000.png</file>
+        <file>Paths/8.png</file>
+        <file>Paths/6.png</file>
+        <file>Paths/4.png</file>
+        <file>Paths/5.png</file>
+        <file>Paths/2-6.png</file>
+        <file>Paths/2-5.png</file>
+        <file>Paths/2-4.png</file>
+        <file>Paths/2.png</file>
+        <file>Paths/2-3.png</file>
+        <file>Paths/2-7.png</file>
+        <file>Paths/7.png</file>
+        <file>Paths/3.png</file>
+        <file>Paths/2-8.png</file>
     </qresource>
 </RCC>
