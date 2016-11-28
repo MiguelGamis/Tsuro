@@ -73,177 +73,55 @@ void movePlayers(Tile * t)
                         break;
                 }
 
-//                qInfo() << "Player at (" + QString::number(players[p].row) + ", " + QString::number(players[p].column) + ")";
+                qInfo() << "Player at (" + QString::number(players[p].row) + ", " + QString::number(players[p].column) + ")";
 
-//                char color;
-//                switch(p)
-//                {
-//                    case 0:
-//                        color = 'b';
-//                        break;
-//                    case 1:
-//                        color = 'r';
-//                        break;
+                char color;
+                switch(p)
+                {
+                    case 0:
+                        color = 'b';
+                        break;
+                    case 1:
+                        color = 'r';
+                        break;
+                }
+
+                //FIND CORRECT PATH
+                int _route = (route-1) - 2*t->rotation; if(_route < 0) _route += 8; _route += 1;
+                int _slot = (slot-1) - 2*t->rotation; if(_slot < 0) _slot += 8; _slot += 1;
+
+                qInfo() << "_ROUTE IS " + QString::number(_route) + " AND _SLOT IS " + QString::number(_slot);
+
+                if(t->paths.count(_slot) == 1)
+                {
+                    qInfo() << "FOUND PATH WITH SLOT";
+                    t->paths[_slot] = color + t->paths[_slot];
+                }
+                else if(t->paths.count(_route) == 1)
+                {
+                    qInfo() << "FOUND PATH WITH ROUTE";
+                    t->paths[_route] = color + t->paths[_route];
+                }
+
+                t->display();
+
+//                std::map<int, std::string>::iterator p;
+//                for(p = t->paths.begin(); p != t->paths.end(); p++) {
+//                    QPixmap pathimg = QPixmap(QString::fromStdString(p->second));
+//                    //qInfo() << "Rendering path " + QString::number(i) + " with " + QString::fromStdString(path) + " rotated " + QString::number(rot) + " times for tile " + QString::fromStdString(this->tileCode);
+//                    if(!pathimg.isNull())
+//                    {
+//                        QMatrix qm;
+//                        qm.scale(0.5, 0.5);
+//                        qm.rotate((p->first/2)*90);
+//                        pathimg = pathimg.transformed(qm);
+//                        painter.drawPixmap(0,0,pathimg);
+//                    }
+//                    else
+//                        qInfo() << "path error occured";
 //                }
 
-//                int jump = route - slot;
-//                int pathrot;
-//                qInfo() << "Jump is " + QString::number(jump);
-//                qInfo() << "Route is " + QString::number(route);
-
-//                std::string path = ":/Paths/"; path += color;
-
-//                //FIND CORRECT PATH
-//                if(jump > 0)
-//                switch(jump)
-//                {
-//                    case 1:
-//                    case 7:
-//                        if(route%2 == 0)
-//                        {
-//                            path += "1.png";
-//                            pathrot = ((route-jump)/2)*90;
-//                        }
-//                        else
-//                        {
-//                            path += "8.png";
-//                            pathrot = ((route-jump)/2)*90;
-//                        }
-//                        break;
-//                    case 2:
-//                    case 6:
-//                        if(route%2 == 0)
-//                        {
-//                            path += "3.png";
-//                            pathrot = ((route-jump)/2)*90;
-//                        }
-//                        else
-//                        {
-//                            path += "2-4.png";
-//                            pathrot = ((route-jump)/2)*90;
-//                        }
-//                        break;
-//                    case 3:
-//                        if(route%2 == 0)
-//                        {
-//                            path += "4.png";
-//                            pathrot = ((route-jump)/2)*90;
-//                        }
-//                        else
-//                        {
-//                            path += "2-5.png";
-//                            pathrot = ((route-jump)/2)*90;
-//                        }
-//                        break;
-//                    case 4:
-//                        if(route%2 == 0)
-//                        {
-//                            path += "2-6.png";
-//                            pathrot = ((route-jump)/2)*90;
-//                        }
-//                        else
-//                        {
-//                            path += "5.png";
-//                            pathrot = ((route-jump)/2)*90;
-//                        }
-//                        break;
-//                    case 5:
-//                        if(route%2 == 0)
-//                        {
-//                            path += "6.png";
-//                            pathrot = ((route-jump)/2)*90;
-//                        }
-//                        else
-//                        {
-//                            path += "2-7.png";
-//                            pathrot = ((route-jump)/2)*90;
-//                        }
-//                        break;
-//                }
-//                else
-//                switch(jump)
-//                {
-//                    case -1:
-//                    case -7:
-//                        if(route%2 == 0)
-//                        {
-//                            path += "8.png";
-//                            pathrot = (route/2)*90;
-//                        }
-//                        else
-//                        {
-//                            path += "1.png";
-//                            pathrot = (route/2)*90;
-//                        }
-//                        break;
-//                    case -2:
-//                    case -6:
-//                        if(route%2 == 0)
-//                        {
-//                            path += "2-4.png";
-//                            pathrot = (route/2)*90;
-//                        }
-//                        else
-//                        {
-//                            path += "3.png";
-//                            pathrot = (route/2)*90;
-//                        }
-//                        break;
-//                    case -3:
-//                        if(route%2 == 0)
-//                        {
-//                            path += "2-5.png";
-//                            pathrot = (route/2)*90;
-//                        }
-//                        else
-//                        {
-//                            path += "4.png";
-//                            pathrot = (route/2)*90;
-//                        }
-//                        break;
-//                    case -4:
-//                        if(route%2 == 0)
-//                        {
-//                            path += "5.png";
-//                            pathrot = (route/2)*90;
-//                        }
-//                        else
-//                        {
-//                            path += "2-6.png";
-//                            pathrot = (route/2)*90;
-//                        }
-//                        break;
-//                    case -5:
-//                        if(route%2 == 0)
-//                        {
-//                            path += "2-7.png";
-//                            pathrot = (route/2)*90;
-//                        }
-//                        else
-//                        {
-//                            path += "6.png";
-//                            pathrot = (route/2)*90;
-//                        }
-//                        break;
-//                }
-
-//                QString qpath = QString::fromStdString(path);
-//                QPixmap pathimg = QPixmap(qpath);
-
-//                QMatrix rm;
-//                rm.rotate(pathrot);
-//                rm.scale(0.5, 0.5);
-//                pathimg = pathimg.transformed(rm);
-
-//                if(!pathimg.isNull())
-//                {
-//                    const QPixmap * pixmap = currentTile->pixmap();
-//                    QPixmap pix = *pixmap;
-//                    QPainter painter(&pix);
-//                    painter.drawPixmap(0, 0, pathimg);
-
-//                    currentTile->setPixmap(pix);
-//                }
+//                t->setPixmap(img);
 
                 //check if player fell off
                 if(0 > players[p].row || 0 > players[p].column || 5 < players[p].row || 5 < players[p].column )
@@ -345,6 +223,7 @@ void Tile::mousePressEvent(QMouseEvent *event)
 
             //TRANSFER TILE CODE
             this->tileCode = click1->tileCode;
+            this->paths = click1->paths;
             std::string code = click1->tileCode;
             std::string codeCopy = click1->tileCode;
             qInfo() << "Processing tile code " + QString::fromStdString(code);
@@ -364,25 +243,10 @@ void Tile::mousePressEvent(QMouseEvent *event)
             this->pathCode = code;
             this->rotation = click1->rotation;
 
-            //TRANSFER IMAGE
-            const QPixmap * pixmap = click1->pixmap();
-            QPixmap pix = *pixmap;
-            this->setPixmap(pix);
-
             movePlayers(this);
 
             int index = click1->playerIndex;
             //ON CHANGE OF click1
-
-            //remove from hand
-//            for( std::vector<std::string>::iterator iter = players[index].hand.begin(); iter != players[index].hand.end(); ++iter )
-//            {
-//                if( *iter == this->tileCode )
-//                {
-//                    players[index].hand.erase( iter );
-//                    break;
-//                }
-//            }
 
             players[index].hand.pop_back();
 
@@ -402,6 +266,7 @@ void Tile::mousePressEvent(QMouseEvent *event)
                 click1->tileCode = tile;
                 click1->rotation = 0;
                 click1->playable = true;
+                click1->construct();
                 click1->display();
             }
             else
@@ -423,32 +288,15 @@ void Tile::mousePressEvent(QMouseEvent *event)
     }
 }
 
-void Tile::display()
+void Tile::construct()
 {
-    std::string path = ":/RedTiles/a00000000.png";
-    QString qpath = QString::fromStdString(path);
-    QPixmap img = QPixmap(qpath);
-    QMatrix rm;
-    rm.scale(0.5, 0.5);
-    img = img.transformed(rm);
-
-//    QMatrix rm;
-//    rm.rotate(this->rotation*90);
-//    rm.scale(0.5, 0.5);
-//    img = img.transformed(rm);
-//    this->setPixmap(img);
-
-    QPainter painter(&img);
-//    painter.setBrush(Qt::NoBrush);
-//    painter.setPen(Qt::red);
-//    painter.drawRect(0,0,64,64);
     std::vector<int> v;
 
     for(int i = 0; i < this->tileCode.length(); i++)
     {
         if(std::find(v.begin(), v.end(), i+1) != v.end())
             continue;
-        std::string path = ":/Paths/";
+        std::string path;
         int mod = i%2;
         if(mod != 0)
         {
@@ -456,27 +304,52 @@ void Tile::display()
         }
 
         int digit = this->tileCode[i] - '0';
-        int relpath = digit - (i/2)*2;
-        int rot = i/2;
-        path += std::to_string(relpath);
+        int pathnum = digit - (i/2)*2;
+        std::string pathstr = std::to_string(pathnum);
+        path += pathstr;
         v.push_back(digit);
+        this->paths[i+1] = path;
+    }
+    qInfo() << "Tile constructed with " + QString::number(v.size()) + " tiles";
+}
 
-        path += ".png";
+void Tile::display()
+{   
+    std::string tile = ":/RedTiles/a00000000.png";
+    QString qtile = QString::fromStdString(tile);
+    QPixmap tileimg = QPixmap(qtile);
+
+    QPainter painter(&tileimg);
+
+    std::map<int, std::string>::iterator p;
+    for(p = this->paths.begin(); p != this->paths.end(); p++) {
+
+        std::string path = ":/Paths/" + p->second + ".png";
         QPixmap pathimg = QPixmap(QString::fromStdString(path));
-        qInfo() << "Rendering path " + QString::number(i) + " with " + QString::fromStdString(path) + " rotated " + QString::number(rot) + " times for tile " + QString::fromStdString(this->tileCode);
+
+        int pathrot = (p->first-1)/2;
+        qInfo() << "Rendering path " + QString::fromStdString(path) + " rotated " + QString::number(pathrot) + " times for tile " + QString::fromStdString(this->tileCode);
         if(!pathimg.isNull())
         {
-            QMatrix qm;
-            qm.scale(0.5, 0.5);
-            qm.rotate(rot*90);
-            pathimg = pathimg.transformed(qm);
+            QMatrix pm;
+            pm.rotate(pathrot*90);
+            pathimg = pathimg.transformed(pm);
             painter.drawPixmap(0,0,pathimg);
         }
         else
             qInfo() << "path error occured";
     }
+    painter.end();
 
-    this->setPixmap(img);
+    QMatrix tm;
+    tm.rotate(this->rotation*90);
+    tileimg = tileimg.transformed(tm);
+
+    QMatrix sm;
+    sm.scale(0.5,0.5);
+    tileimg = tileimg.transformed(sm);
+
+    this->setPixmap(tileimg);
 }
 
 void validate(Tile *temp)//, int c)

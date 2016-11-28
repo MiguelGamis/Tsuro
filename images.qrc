@@ -144,5 +144,7 @@
         <file>Paths/7.png</file>
         <file>Paths/3.png</file>
         <file>Paths/2-8.png</file>
+        <file>Paths/r2-3.png</file>
+        <file>Paths/b2-3.png</file>
     </qresource>
 </RCC>

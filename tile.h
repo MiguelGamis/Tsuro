@@ -21,6 +21,7 @@ public:
     int playerIndex;
     bool playable;
     int rotation = 0;
+    std::map<int,std::string> paths;
 
     //Constructors
     Tile(QWidget* pParent=0, Qt::WindowFlags f=0) : QLabel(pParent, f) {};
@@ -28,6 +29,7 @@ public:
 
     //Methods
     void mousePressEvent(QMouseEvent *event);
+    void construct();
     void display();
     void tileDisplay();
 };

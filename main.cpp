@@ -97,6 +97,7 @@ void updateHand()
             t->playable = true;
             int gap = 0; if(i) gap = i*5;
             t->setGeometry(basepointx+(64*i)+gap, basepointy+150, 64, 64);
+            t->construct();
             t->display();
         }
     }
