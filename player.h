@@ -1,19 +1,26 @@
 #ifndef PLAYER_H
 #define PLAYER_H
 
-#include <vector>
 #include <QLabel>
+#include <QDebug>
+
+struct handtile {
+  std::string x;
+  handtile *next;
+};
 
 class Player
 {
 public:
-    std::vector<std::string> hand;
+    handtile * hand;
     int index;
     int row, column, slot, distance;
     bool isAlive = true;
     QLabel * piece;
     static int total;
     Player() {index = Player::total; Player::total++;}
+    void addTileToHand(std::string tile);
+    bool removeFromHand(std::string tile);
 };
 
 

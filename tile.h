@@ -4,11 +4,13 @@
 #include <QDebug>
 #include <string>
 
-#include <player.h>
 #include <vector>
-#include <deck.h>
 #include <QMessageBox>
 #include <QPainter>
+
+#include <player.h>
+#include <deck.h>
+#include <gamemanager.h>
 
 class Tile: public QLabel
 {

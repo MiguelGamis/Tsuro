@@ -10,7 +10,6 @@
         <file>Tiles/a37154826.png</file>
         <file>Tiles/a37186524.png</file>
         <file>Tiles/a38176542.png</file>
-        <file>Tiles/a43217856.png</file>
         <file>Tiles/a43218765.png</file>
         <file>Tiles/a46718235.png</file>
         <file>Tiles/a46817253.png</file>
@@ -52,8 +51,6 @@
         <file>RedTiles/a36187254.png</file>
         <file>RedTiles/a38167452 (2).png</file>
         <file>RedTiles/a38167452.png</file>
-        <file>RedTiles/a43218756 (2).png</file>
-        <file>RedTiles/a43218756.png</file>
         <file>RedTiles/a46513287.png</file>
         <file>RedTiles/a46718235.png</file>
         <file>RedTiles/a47513826 (2).png</file>
@@ -100,17 +97,6 @@
         <file>RedTiles/a86754231.png</file>
         <file>RedTiles/a87564321.png</file>
         <file>Paths/b4.png</file>
-        <file>deck.cpp</file>
-        <file>deck.h</file>
-        <file>gamemanager.cpp</file>
-        <file>gamemanager.h</file>
-        <file>main.cpp</file>
-        <file>mainwindow.cpp</file>
-        <file>mainwindow.h</file>
-        <file>player.cpp</file>
-        <file>player.h</file>
-        <file>tile.cpp</file>
-        <file>tile.h</file>
         <file>Graphics/BoardBackground.jpg</file>
         <file>Paths/b6.png</file>
         <file>Paths/r6.png</file>
@@ -146,5 +132,13 @@
         <file>Paths/2-8.png</file>
         <file>Paths/r2-3.png</file>
         <file>Paths/b2-3.png</file>
+        <file>Paths/r7.png</file>
+        <file>Paths/b7.png</file>
+        <file>Paths/r4.png</file>
+        <file>Tiles/a43217856.png</file>
+        <file>RedTiles/a43218765 (2).png</file>
+        <file>RedTiles/a43218765.png</file>
+        <file>Graphics/blue.png</file>
+        <file>Graphics/red.png</file>
     </qresource>
 </RCC>

@@ -1,5 +1,5 @@
 #include "mainwindow.h"
-//#include "gamemanager.h"
+#include "gamemanager.h"
 #include "player.h"
 #include "deck.h"
 #include "tile.h"
@@ -13,6 +13,8 @@ QWidget *myWidget;
 
 Tile *tile[6][6] = { { NULL } };
 Tile *click1;
+
+GameManager *gm;
 
 class Border
 {
@@ -32,50 +34,16 @@ public:
     }
 };
 
-//class Player
-//{
-//public:
-//    std::vector<std::string> hand;
-//    int index;
-//    int row, column, slot;
-//    static int total;
-//    Player() {index = Player::total; Player::total++;}
-//};
-
-//int Player::total = 0;
-
 std::vector<Player> players;
 int turn;
 
 Deck * deck = new Deck();
 
-int basepointsx[] = {100, 100};
-int basepointsy[] = {100, 400};
-
-void showPlayers(QWidget *baseWidget)
+void showPlayersOnBoard()
 {
     for(int p = 0; p < players.size(); p++)
     {
-        for(int i = 0; i < 3; i++)
-        {
-            if(deck->moreCard())
-            {
-                std::string tile = deck->draw();
-                players[p].hand.push_back(tile);
-            }
-        }
-
-        QLabel *player1 = new QLabel(baseWidget);
-        QLabel *name1 = new QLabel("Player", baseWidget);
-        QLabel *time1 = new QLabel("00:00:00", baseWidget);
-
-        int basepointx = basepointsx[players[p].index];
-        int basepointy = basepointsy[players[p].index];
-
-        name1->setGeometry(basepointx + 25,basepointy + 110,80,20);
-        time1->setGeometry(basepointx + 20,basepointy + 135,80,20);
-        player1->setGeometry(basepointx,basepointy,100,100);
-        player1->setPixmap(QPixmap(":/Graphics/profile.png"));
+        GameManager::showPlayerOnBoard(&players[p]);
     }
 }
 
@@ -83,23 +51,7 @@ void updateHand()
 {
     for(int p = 0; p < players.size(); p++)
     {
-        qInfo() << "Player hand";
-        for(int i = 0; i < players[p].hand.size(); i++)
-        {
-            int basepointx = basepointsx[players[p].index];
-            int basepointy = basepointsy[players[p].index];
-
-            Tile * t = new Tile(myWidget);
-            t->tileCode = players[p].hand[i];
-            qInfo() << QString::fromStdString(t->tileCode);
-            t->rotation = 0;
-            t->playerIndex = p;
-            t->playable = true;
-            int gap = 0; if(i) gap = i*5;
-            t->setGeometry(basepointx+(64*i)+gap, basepointy+150, 64, 64);
-            t->construct();
-            t->display();
-        }
+        GameManager::updateHand(&players[p]);
     }
 }
 
@@ -107,8 +59,7 @@ QLabel *selectedTile;
 
 void accessories(QWidget *baseWidget)
 {
-    showPlayers(baseWidget);
-    
+    showPlayersOnBoard();
     
     QLabel *moves = new QLabel(baseWidget);
 
@@ -146,7 +97,6 @@ void tsuroBoard(QWidget *baseWidget, Tile *tile[6][6])
             tile[i][j] = new Tile(baseWidget);
             tile[i][j]->row=i;
             tile[i][j]->col=j;
-            //tile[i][j]->tileDisplay();
             tile[i][j]->setGeometry(hor,ver,64,64);
             tile[i][j]->playable = false;
             hor+=64;
@@ -171,6 +121,12 @@ void drawPlayers()
         int deltay = 0;
 
         QLabel *circle = new QLabel(myWidget);
+        std::string tile = ":/Graphics/blue.png";
+        QString qtile = QString::fromStdString(tile);
+        QPixmap tileimg = QPixmap(qtile);
+        QMatrix m; m.scale(0.1,0.1);
+        tileimg = tileimg.transformed(m);
+        circle->setPixmap(tileimg);
         players[p].piece = circle;
         switch(slot)
         {
@@ -204,8 +160,7 @@ void drawPlayers()
                 break;
         }
 
-        circle->setGeometry(345 + (column*64) + deltax, 120 + (row*64) + deltay, 10, 10);
-        circle->setStyleSheet("QLabel {background-color: rgb(100,55,127);}:hover{background-color: rgb(170,85,127);}");
+        circle->setGeometry(345 + (column*64) + deltax, 113 + (row*64) + deltay, 20, 30);
     }
 }
 
@@ -219,7 +174,7 @@ int main(int argc, char *argv[])
             Qt::LeftToRight,
             Qt::AlignCenter,
             myWidget->size(),
-            QRect(0,0,2000,1000)
+            QRect(0,0,2000,1200)
         )
     );
 
@@ -228,8 +183,8 @@ int main(int argc, char *argv[])
 
     Player p1, p2;
     //HARD-CODE LOCATIONS
-    p1.row = 0; p1.column = 0; p1.slot = 1;
-    p2.row = 2; p2.column = 0; p2.slot = 8;
+    p1.row = 0; p1.column = 0; p1.slot = 1; p1.index = 0;
+    p2.row = 2; p2.column = 0; p2.slot = 8; p2.index = 1;
 
     players.push_back(p1);
     players.push_back(p2);

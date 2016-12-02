@@ -14,10 +14,58 @@ extern int basepointsy[];
 
 void validate(Tile *temp);//,int c);
 
+void drawPlayer(Player * player)
+{
+    int deltax = 0;
+    int deltay = 0;
+
+    switch(player->slot)
+    {
+        case 1:
+            deltax = 21;
+            break;
+        case 2:
+            deltax = 42;
+            break;
+        case 3:
+            deltax = 64;
+            deltay = 21;
+            break;
+        case 4:
+            deltax = 64;
+            deltay = 42;
+            break;
+        case 5:
+            deltax = 42;
+            deltay = 64;
+            break;
+        case 6:
+            deltax = 21;
+            deltay = 64;
+            break;
+        case 7:
+            deltay = 42;
+            break;
+        case 8:
+            deltay = 21;
+            break;
+    }
+
+    int x_ = 345 + (player->column*64) + deltax;
+    int y_ = 113 + (player->row*64) + deltay;
+    player->piece->setGeometry(x_, y_, 20, 30);
+
+    if(!player->isAlive) QMessageBox::information(myWidget, "Player Eliminated", "Player " + QString::number(player->index + 1) + " has been eliminated");
+}
+
 void movePlayers(Tile * t)
 {
     for(int p = 0; p < players.size(); p++)
     {
+        if(!players[p].isAlive)
+        {
+            continue;
+        }
         if(players[p].row == t->row && players[p].column == t->col)
         {
             Tile * currentTile = t;
@@ -27,53 +75,80 @@ void movePlayers(Tile * t)
                 int slot = players[p].slot;
                 char x = currentTile->pathCode.at(slot-1);
                 int route = x - '0';
-                //qInfo() << QString::number(slot) + "th of " + QString::fromStdString(currentTile->pathCode) + " = " + QString::number(route);
+
+                //CHECK FOR COLLISION
+                bool isColliding = false;
+                for(int p2 = p+1; p2 < players.size(); p2++)
+                {
+                    bool samerow = players[p].row == players[p2].row;
+                    bool samecolumn = players[p].column == players[p2].column;
+                    if(samerow && samecolumn)
+                    {
+                        bool samepath = route == players[p2].slot;
+                        if(samepath)
+                        {
+                            players[p].isAlive = false;
+                            players[p2].isAlive = false;
+                            isColliding = true;
+                            break;
+                        }
+                    }
+                }
+
+                if(isColliding) {currentTile->display(); break;}
+
+                qInfo() << QString::number(slot) + "th of " + QString::fromStdString(currentTile->pathCode) + " = " + QString::number(route);
 
                 switch(route)
                 {
                     case 1:
-                        //qInfo() << "UP to slot 6...";
+                        qInfo() << "UP to slot 6...";
                         players[p].slot = 6;
                         players[p].row--;
                         break;
                     case 2:
-                        //qInfo() << "UP to slot 5...";
+                        qInfo() << "UP to slot 5...";
                         players[p].slot = 5;
                         players[p].row--;
                         break;
                     case 3:
-                        //qInfo() << "> to slot 8";
+                        qInfo() << "> to slot 8";
                         players[p].slot = 8;
                         players[p].column++;
                         break;
                     case 4:
-                        //qInfo() << "> to slot 7...";
+                        qInfo() << "> to slot 7...";
                         players[p].slot = 7;
                         players[p].column++;
                         break;
                     case 5:
-                        //qInfo() << "DOWN to slot 2...";
+                        qInfo() << "DOWN to slot 2...";
                         players[p].slot = 2;
                         players[p].row++;
                         break;
                     case 6:
-                        //qInfo() << "DOWN to slot 1...";
+                        qInfo() << "DOWN to slot 1...";
                         players[p].slot = 1;
                         players[p].row++;
                         break;
                     case 7:
-                        //qInfo() << "< to slot 4...";
+                        qInfo() << "< to slot 4...";
                         players[p].slot = 4;
                         players[p].column--;
                         break;
                     case 8:
-                        //qInfo() << "< to slot 3...";
+                        qInfo() << "< to slot 3...";
                         players[p].slot = 3;
                         players[p].column--;
                         break;
                 }
 
                 qInfo() << "Player at (" + QString::number(players[p].row) + ", " + QString::number(players[p].column) + ")";
+
+                std::map<int, std::string>::iterator g;
+                for(g = currentTile->paths.begin(); g != currentTile->paths.end(); g++) {
+                    qInfo() << "[" + QString::number(g->first);// + "] -> " + p->second;
+                }
 
                 char color;
                 switch(p)
@@ -87,47 +162,28 @@ void movePlayers(Tile * t)
                 }
 
                 //FIND CORRECT PATH
-                int _route = (route-1) - 2*t->rotation; if(_route < 0) _route += 8; _route += 1;
-                int _slot = (slot-1) - 2*t->rotation; if(_slot < 0) _slot += 8; _slot += 1;
+                int _route = (route-1) - 2*currentTile->rotation; if(_route < 0) _route += 8; _route += 1;
+                int _slot = (slot-1) - 2*currentTile->rotation; if(_slot < 0) _slot += 8; _slot += 1;
 
                 qInfo() << "_ROUTE IS " + QString::number(_route) + " AND _SLOT IS " + QString::number(_slot);
 
-                if(t->paths.count(_slot) == 1)
+                if(currentTile->paths.count(_slot) == 1)
                 {
                     qInfo() << "FOUND PATH WITH SLOT";
-                    t->paths[_slot] = color + t->paths[_slot];
+                    currentTile->paths[_slot] = color + currentTile->paths[_slot];
                 }
-                else if(t->paths.count(_route) == 1)
+                else if(currentTile->paths.count(_route) == 1)
                 {
                     qInfo() << "FOUND PATH WITH ROUTE";
-                    t->paths[_route] = color + t->paths[_route];
+                    currentTile->paths[_route] = color + currentTile->paths[_route];
                 }
 
-                t->display();
+                currentTile->display();
 
-//                std::map<int, std::string>::iterator p;
-//                for(p = t->paths.begin(); p != t->paths.end(); p++) {
-//                    QPixmap pathimg = QPixmap(QString::fromStdString(p->second));
-//                    //qInfo() << "Rendering path " + QString::number(i) + " with " + QString::fromStdString(path) + " rotated " + QString::number(rot) + " times for tile " + QString::fromStdString(this->tileCode);
-//                    if(!pathimg.isNull())
-//                    {
-//                        QMatrix qm;
-//                        qm.scale(0.5, 0.5);
-//                        qm.rotate((p->first/2)*90);
-//                        pathimg = pathimg.transformed(qm);
-//                        painter.drawPixmap(0,0,pathimg);
-//                    }
-//                    else
-//                        qInfo() << "path error occured";
-//                }
-
-//                t->setPixmap(img);
-
-                //check if player fell off
+                //CHECK IF PLAYER FELL OFF
                 if(0 > players[p].row || 0 > players[p].column || 5 < players[p].row || 5 < players[p].column )
                 {
                     players[p].isAlive = false;
-                    QMessageBox::information(myWidget, "Tsuro", "Game Over");
                     break;
                 }
 
@@ -135,44 +191,7 @@ void movePlayers(Tile * t)
             }
             while(!currentTile->pathCode.empty());
 
-            int deltax = 0;
-            int deltay = 0;
-
-            switch(players[p].slot)
-            {
-                case 1:
-                    deltax = 21;
-                    break;
-                case 2:
-                    deltax = 42;
-                    break;
-                case 3:
-                    deltax = 64;
-                    deltay = 21;
-                    break;
-                case 4:
-                    deltax = 64;
-                    deltay = 42;
-                    break;
-                case 5:
-                    deltax = 42;
-                    deltay = 64;
-                    break;
-                case 6:
-                    deltax = 21;
-                    deltay = 64;
-                    break;
-                case 7:
-                    deltay = 42;
-                    break;
-                case 8:
-                    deltay = 21;
-                    break;
-            }
-
-            int x_ = 345 + (players[p].column*64) + deltax;
-            int y_ = 120 + (players[p].row*64) + deltay;
-            players[p].piece->setGeometry(x_, y_, 10, 10);
+            drawPlayer(&players[p]);
         }
     }
 }
@@ -180,6 +199,7 @@ void movePlayers(Tile * t)
 void Tile::mousePressEvent(QMouseEvent *event)
 {
     if(this->playable)
+
     {
         if(turn == this->playerIndex)
         {
@@ -218,72 +238,71 @@ void Tile::mousePressEvent(QMouseEvent *event)
     {
         if(click1 != NULL)
         {
+            int dy = this->row - players[turn].row;
+            int dx = this->col - players[turn].column;
 
-            this->playable = false;
-
-            //TRANSFER TILE CODE
-            this->tileCode = click1->tileCode;
-            this->paths = click1->paths;
-            std::string code = click1->tileCode;
-            std::string codeCopy = click1->tileCode;
-            qInfo() << "Processing tile code " + QString::fromStdString(code);
-            for(int r = 0; r < click1->rotation; r++)
+            if(dy == 0 && dx == 0)
             {
-                for(int i = 0; i < codeCopy.length(); i++)
+                this->playable = false;
+
+                //TRANSFER TILE CODE
+                this->tileCode = click1->tileCode;
+                this->paths = click1->paths;
+                std::string code = click1->tileCode;
+                std::string codeCopy = click1->tileCode;
+                qInfo() << "Processing tile code " + QString::fromStdString(code);
+                for(int r = 0; r < click1->rotation; r++)
                 {
-                    int x = codeCopy.at(i) - 1;
-                    x = (x+2)%8 + 1;
-                    int index = i;
-                    index = (index+2)%8;
-                    code[index] = '0' + x;
+                    for(int i = 0; i < codeCopy.length(); i++)
+                    {
+                        int x = codeCopy.at(i) - 1;
+                        x = (x+2)%8 + 1;
+                        int index = i;
+                        index = (index+2)%8;
+                        code[index] = '0' + x;
+                    }
+                    codeCopy = code;
+                    qInfo() << "Rotation " + QString::number(r+1) + " -> " + QString::fromStdString(code);
                 }
-                codeCopy = code;
-                qInfo() << "Rotation " + QString::number(r+1) + " -> " + QString::fromStdString(code);
+                this->pathCode = code;
+                this->rotation = click1->rotation;
+
+                movePlayers(this);
+
+                int index = click1->playerIndex;
+                //ON CHANGE OF click1
+
+                //remove played tile
+                players[turn].removeFromHand(click1->tileCode);
+
+                //draw new tile
+                bool newCard = deck->moreCard();
+
+                std::string tile;
+                if(newCard)
+                {
+                    tile = deck->draw();
+                    players[turn].addTileToHand(tile);
+                }
+
+
+                qInfo() << "UPDATING HAND AFTER TILE HAS BEEN PLAYED";
+                //refresh image of contents of hand
+                GameManager::updateHand(&players[turn]);
+
+                selectedTile->setText("None");
+                click1->setStyleSheet("");
+                click1 = NULL;
+
+                //TURN CHANGE
+                int endingturn = turn;
+                do
+                {
+                    turn = (turn + 1)%players.size();
+                    if(turn == endingturn) break;
+                }
+                while(!players[turn].isAlive);
             }
-            this->pathCode = code;
-            this->rotation = click1->rotation;
-
-            movePlayers(this);
-
-            int index = click1->playerIndex;
-            //ON CHANGE OF click1
-
-            players[index].hand.pop_back();
-
-            //draw new tile
-            bool newCard = deck->moreCard();
-
-            std::string tile;
-            if(newCard)
-            {
-                tile = deck->draw();
-                players[index].hand.push_back(tile);
-            }
-
-            //refresh image of contents of hand
-            if(newCard)
-            {
-                click1->tileCode = tile;
-                click1->rotation = 0;
-                click1->playable = true;
-                click1->construct();
-                click1->display();
-            }
-            else
-            {
-                QPixmap m_pixmap;
-                click1->setPixmap(m_pixmap);
-                click1->playable = false;
-//                delete click1;
-            }
-
-            selectedTile->setText("None");
-            click1->setStyleSheet("");
-            click1 = NULL;
-
-            do
-                turn = (turn + 1)%players.size();
-            while(!players[turn].isAlive);
         }
     }
 }
@@ -310,7 +329,7 @@ void Tile::construct()
         v.push_back(digit);
         this->paths[i+1] = path;
     }
-    qInfo() << "Tile constructed with " + QString::number(v.size()) + " tiles";
+    qInfo() << "Tile constructed with " + QString::number(this->paths.size()) + " paths";
 }
 
 void Tile::display()
@@ -328,7 +347,7 @@ void Tile::display()
         QPixmap pathimg = QPixmap(QString::fromStdString(path));
 
         int pathrot = (p->first-1)/2;
-        qInfo() << "Rendering path " + QString::fromStdString(path) + " rotated " + QString::number(pathrot) + " times for tile " + QString::fromStdString(this->tileCode);
+        //qInfo() << "Rendering path " + QString::fromStdString(path) + " rotated " + QString::number(pathrot) + " times for tile " + QString::fromStdString(this->tileCode);
         if(!pathimg.isNull())
         {
             QMatrix pm;
