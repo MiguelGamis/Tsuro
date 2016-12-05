@@ -3,21 +3,41 @@
 extern std::vector<Player> players;
 extern QWidget *myWidget;
 extern Deck * deck;
+extern Tile *hands[6][8];
 
 int basepointsx[] = {100, 100};
 int basepointsy[] = {100, 400};
 
-void GameManager::showPlayerOnBoard(Player * p)
+int maxHand = 8;
+int maxPlayers = 6;
+int tilemargin = 5;
+
+void GameManager::setUpTileSlot()
 {
-    for(int i = 0; i < 3; i++)
+    qInfo() << "THERE ARE " + QString::number(players.size()) + " PLAYERS";
+    for(int playerindex = 0; playerindex < players.size(); playerindex++)
     {
-        if(deck->moreCard())
+        qInfo() << "MAKING TILE SLOTS FOR PLAYER " + QString::number(playerindex);
+        int basepointx = basepointsx[playerindex];
+        int basepointy = basepointsy[playerindex];
+
+        for(int tileindex = 0; tileindex < maxHand; tileindex++)
         {
-            std::string tile = deck->draw();
-            p->addTileToHand(tile);
+            qInfo() << "    TILE SLOT #" + QString::number(tileindex);
+            Tile * t = new Tile(myWidget);
+
+            t->setGeometry( basepointx + (64*tileindex) + (tileindex*tilemargin),
+                            basepointy + 150,
+                            64,
+                            64);
+
+            hands[playerindex][tileindex] = t;
         }
     }
+}
 
+void GameManager::showPlayerOnBoard(Player * p)
+{
     QLabel *player1 = new QLabel(myWidget);
     QLabel *name1 = new QLabel("Player " +  QString::number(p->index + 1), myWidget);
     QLabel *time1 = new QLabel("00:00:00", myWidget);
@@ -35,27 +55,25 @@ void GameManager::updateHand(Player * p)
 {
     handtile * hand = p->hand;
 
-    int i = 0;
+    qInfo() << "Updating hand of PLAYER " + QString::number(p->index) + " with 1st tile " + QString::fromStdString(p->hand->x);
 
-     qInfo() << "Any cards?";
+    int i = 0;
 
     while(hand)
     {
-        qInfo() << "Here's a card!!! " + QString::fromStdString(hand->x);
-        int basepointx = basepointsx[p->index];
-        int basepointy = basepointsy[p->index];
+        qInfo() << "Updating handtile [" + QString::number(p->index) + "][" + QString::number(i) + "]";
 
-        Tile * t = new Tile(myWidget);
-        t->tileCode = hand->x;
-        t->rotation = 0;
-        t->playerIndex = p->index;
-        t->playable = true;
-        int gap = 0; if(i) gap = i*5;
-        t->setGeometry(basepointx+(64*i)+gap, basepointy+150, 64, 64);
-        t->construct();
-        t->display();
+        qInfo() << QString::fromStdString(hand->x);
+
+        hands[p->index][i]->tileCode = hand->x;
+
+        hands[p->index][i]->rotation = 0;
+        hands[p->index][i]->playerIndex = p->index;
+        hands[p->index][i]->playable = true;
+        hands[p->index][i]->paths.clear();
+        hands[p->index][i]->construct();
+        hands[p->index][i]->display();
 
         hand = hand->next; i++;
     }
 }
-

@@ -14,7 +14,8 @@ QWidget *myWidget;
 Tile *tile[6][6] = { { NULL } };
 Tile *click1;
 
-GameManager *gm;
+//TO-DO: DYNAMICIZE
+Tile *hands[6][8] = { { NULL } };
 
 class Border
 {
@@ -47,11 +48,34 @@ void showPlayersOnBoard()
     }
 }
 
-void updateHand()
+void dealHands()
 {
     for(int p = 0; p < players.size(); p++)
     {
+        for(int i = 0; i < 3; i++)
+        {
+            //draw new tile
+            bool newCard = deck->moreCard();
+
+            if(newCard)
+            {
+                std::string tile = deck->draw();
+                players[p].addTileToHand(tile);
+            }
+        }
         GameManager::updateHand(&players[p]);
+    }
+
+    handtile * t = players[1].hand;
+
+    qInfo() << "Player hand update";
+
+    while(t)
+    {
+        qInfo() << "...";
+        qInfo() << QString::fromStdString(t->x);
+        t = t->next;
+        qInfo() << "more...";
     }
 }
 
@@ -191,7 +215,8 @@ int main(int argc, char *argv[])
     turn = 0;//rand()%players.size();
 
     accessories(myWidget);
-    updateHand();
+    GameManager::setUpTileSlot();
+    dealHands();
     tsuroBoard(myWidget,tile);
     drawPlayers();
 

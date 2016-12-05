@@ -9,6 +9,7 @@
 class GameManager
 {
 public:
+    static void setUpTileSlot();
     static void showPlayerOnBoard(Player *p);
     static void updateHand(Player *p);
 };

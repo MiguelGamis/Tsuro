@@ -6,13 +6,13 @@
 
 struct handtile {
   std::string x;
-  handtile *next;
+  handtile *next = NULL;
 };
 
 class Player
 {
 public:
-    handtile * hand;
+    handtile * hand = NULL;
     int index;
     int row, column, slot, distance;
     bool isAlive = true;

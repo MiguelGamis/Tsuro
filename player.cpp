@@ -6,7 +6,8 @@ void Player::addTileToHand(std::string tile)
 {
     handtile * newtile = new handtile();
     newtile->x = tile;
-    newtile->next = this->hand;
+    if(this->hand)
+        newtile->next = this->hand;
     this->hand = newtile;
 }
 
